@@ -1,0 +1,16 @@
+#CS 101 Lab
+#Program 2
+#Ryan Lee
+#rlhmb@umsystem.edu
+
+'''Problem: Ask the user for a grade 0 - 100.
+
+Calculate weighted grade by multiplying the grade for a category
+(labs, lab exams, and attendance) by the weight and the sum
+of those results.
+
+Output the weighted grade as well as the letter grade.
+
+Warn the user if they enter a grade greater than 100 or less than 0,
+then change it appropriately.'''
+
