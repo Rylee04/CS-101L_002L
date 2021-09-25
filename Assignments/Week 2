@@ -70,3 +70,4 @@ elif 60 <= weightedGrade < 70:
     print(name, "has a letter grade of D")
 elif 0 <= weightedGrade < 60:
     print(name, "has a letter grade of F")
+
