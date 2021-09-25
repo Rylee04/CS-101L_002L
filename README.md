@@ -1,2 +1,2 @@
-# CS 101L
- CS Lab Assignments
+# CS 101L_002L
+ CS Lab Assignments / Python Programming Skills
