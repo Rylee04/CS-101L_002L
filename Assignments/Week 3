@@ -74,9 +74,16 @@ while playCheck == True:
 
     playAgain = input("Do you want to play again? Y to continue, N to quit ==> ")
 
+    if playAgain.upper() != "Y" or playAgain.upper() != "N":
+        while playAgain.upper() != "Y" or playAgain.upper() != "N":
+            if playAgain.upper() == "Y" or playAgain.upper() == "N":
+                break
+            else:
+                playAgain = input("Do you want to play again? Y to continue, N to quit ==> ")
+    
     if playAgain.upper() == "Y":
         print()
-        continue
-    elif playAgain.upper() == "N":
+
+    if playAgain.upper() == "N":
         playCheck = False
 
