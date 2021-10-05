@@ -1,0 +1,88 @@
+
+#CS 101 Lab
+#Program 4
+#Ryan Lee
+#rlhmb@umsystem.edu
+
+'''In this program you are going to simulate a slot machine in Pierson Hall.
+The slot machine has 3 reels and each reel will have numbers ranging from 1 to 10.
+The user can choose how many chips they start out with.
+They are allowed to wager between 1 to the amount of bank they currently have on each spin.
+If they match 3 numbers, they will win 10 times their wager.
+If they match 2 numbers they will win 3 times their wager.'''
+
+import random
+
+def playAgain():
+    playAgain = input("Do you want to play again? Y to continue, N to quit ==> ")
+
+    if playAgain.upper() != "Y" and playAgain.upper() != "YES" and playAgain.upper() != "N" and playAgain.upper() != "NO":
+        while playAgain.upper() != "Y" and playAgain.upper() != "N":
+            if playAgain.upper() == "Y" or playAgain.upper() == "N":
+                break
+            else:
+                playAgain = input("Do you want to play again? Y to continue, N to quit ==> ")
+    
+    if playAgain.upper() == "Y" or playAgain.upper() == "YES":
+        return True
+
+    if playAgain.upper() == "N" or playAgain.upper() == "NO":
+        return False
+
+def getWager():
+    #something
+    return
+
+def getSlotResults():
+    #something
+    return
+
+def getMatches():
+    #something
+    return
+
+def getBank():
+    chips = int(input("How many chips would you like to start with? ==> "))
+
+    while chips <= 0 or chips > 100:
+        if chips <= 0:
+            print("Too low a value, you can only choose 1 - 100 chips")
+            chips = int(input("How many chips would you like to start with? ==> "))
+        elif chips > 100:
+            print("Too high a value, you can only choose 1 -100 chips")
+            chips = int(input("How many chips would you like to start with? ==> "))
+
+    return chips
+
+def getPayout():
+    #something
+    return
+
+
+if __name__ == "__main__":
+
+    playing = True
+    
+    while playing:
+
+        bank = getBank()
+
+        while True:  # Replace with condition for if they still have money.
+            
+            wager = getWager(bank)
+
+            reel1, reel2, reel3 = getSlotResults()
+
+            matches = getMatches(reel1, reel2, reel3)
+            payout = getPayout(wager, matches)
+            bank = bank + payout
+
+            print("Your spin", reel1, reel2, reel3)
+            print("You matched", matches, "reels")
+            print("You won/lost", payout)
+            print("Current bank", bank)
+            print()
+           
+        print("You lost all", 0, "in", 0, "spins")
+        print("The most chips you had was", 0)
+        playing = playAgain()
