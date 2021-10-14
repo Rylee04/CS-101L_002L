@@ -5,58 +5,119 @@
 #rlhmb@umsystem.edu
 
 '''In this program you are going to simulate a slot machine in Pierson Hall.
+
 The slot machine has 3 reels and each reel will have numbers ranging from 1 to 10.
+
 The user can choose how many chips they start out with.
+
 They are allowed to wager between 1 to the amount of bank they currently have on each spin.
+
 If they match 3 numbers, they will win 10 times their wager.
+
 If they match 2 numbers they will win 3 times their wager.'''
 
 import random
 
 def playAgain():
+
     playAgain = input("Do you want to play again? Y to continue, N to quit ==> ")
 
     if playAgain.upper() != "Y" and playAgain.upper() != "YES" and playAgain.upper() != "N" and playAgain.upper() != "NO":
-        while playAgain.upper() != "Y" and playAgain.upper() != "N":
-            if playAgain.upper() == "Y" or playAgain.upper() == "N":
+
+        while playAgain.upper() != "Y" and playAgain.upper() != "YES" and playAgain.upper() != "N" and playAgain.upper() != "NO":
+
+            if playAgain.upper() == "Y" or playAgain.upper() == "YES" or playAgain.upper() == "N" or playAgain.upper() == "NO":
+
                 break
+
             else:
-                playAgain = input("Do you want to play again? Y to continue, N to quit ==> ")
+
+                print("You must enter Y/YES/N/NO to continue. Please try again")
+                playAgain = input("Do you want to play again? ==> ")
     
     if playAgain.upper() == "Y" or playAgain.upper() == "YES":
+
         return True
 
     if playAgain.upper() == "N" or playAgain.upper() == "NO":
+
         return False
 
-def getWager():
-    #something
-    return
+def getWager(bank):
+
+    wager = int(input("How many chips do you want to wager? ==> "))
+
+    while wager <= 0 or wager > bank:
+
+        if wager <= 0:
+
+            print("The wager amount must be greater than 0. Please enter again.")
+            wager = int(input("How many chips do you want to wager? ==> "))
+
+        elif wager > bank:
+
+            print("The wager amount cannot be greater than how much you have.", bank)
+            wager = int(input("How many chips do you want to wager? ==> "))
+
+    return wager
 
 def getSlotResults():
-    #something
-    return
 
-def getMatches():
-    #something
-    return
+    reel1 = random.randint(1, 10)
+    reel2 = random.randint(1, 10)
+    reel3 = random.randint(1, 10)
+
+    return reel1, reel2, reel3
+
+def getMatches(reel1, reel2, reel3):
+
+    if reel1 == reel2 and reel2 == reel3:
+
+        matches = 3
+
+    elif reel1 == reel2 or reel1 == reel3 or reel2 == reel3:
+
+        matches = 2
+
+    else:
+
+        matches = 0
+
+    return matches
 
 def getBank():
+
     chips = int(input("How many chips would you like to start with? ==> "))
 
     while chips <= 0 or chips > 100:
+
         if chips <= 0:
+
             print("Too low a value, you can only choose 1 - 100 chips")
             chips = int(input("How many chips would you like to start with? ==> "))
+
         elif chips > 100:
+
             print("Too high a value, you can only choose 1 -100 chips")
             chips = int(input("How many chips would you like to start with? ==> "))
 
     return chips
 
-def getPayout():
-    #something
-    return
+def getPayout(wager, matches):
+
+    if matches == 3:
+
+        payout = wager * 10 - wager
+
+    elif matches == 2:
+
+        payout = wager * 3 - wager
+
+    else:
+
+        payout = -wager
+
+    return payout
 
 
 if __name__ == "__main__":
@@ -66,8 +127,11 @@ if __name__ == "__main__":
     while playing:
 
         bank = getBank()
+        startingBank = bank
+        spins = 0
+        mostChips = bank
 
-        while True:  # Replace with condition for if they still have money.
+        while bank > 0:
             
             wager = getWager(bank)
 
@@ -76,6 +140,8 @@ if __name__ == "__main__":
             matches = getMatches(reel1, reel2, reel3)
             payout = getPayout(wager, matches)
             bank = bank + payout
+            spins += 1
+            mostChips = max(mostChips, bank)
 
             print("Your spin", reel1, reel2, reel3)
             print("You matched", matches, "reels")
@@ -83,6 +149,7 @@ if __name__ == "__main__":
             print("Current bank", bank)
             print()
            
-        print("You lost all", 0, "in", 0, "spins")
-        print("The most chips you had was", 0)
+        print("You lost all", startingBank, "in", spins, "spins")
+        print("The most chips you had was", mostChips)
         playing = playAgain()
+
