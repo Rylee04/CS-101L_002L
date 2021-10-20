@@ -16,25 +16,56 @@ Go back to the main menu until they select quit.'''
 import string
 inUse = True
 
-def encrypt(text, shiftBy):
-    #fixme
-    return
+def encrypt(text, key):
+    result = ""
+    text = text.upper()
 
-def decrypt(text, shiftBy):
-    #fixme
-    return
+    for i in range(len(text)):
+        char = text[i]
+
+        if char == " ":
+            result += " "
+        else:
+            result += chr((ord(char) + key - 65) % 26 + 65)
+    
+    print("Encrypted:", result)
+
+def decrypt(text, key):
+    result = ""
+    text = text.upper()
+
+    for i in range(len(text)):
+        char = text[i]
+
+        if char == " ":
+            result += " "
+        else:
+            result += chr((ord(char) - key - 65) % 26 + 65)
+
+    print("Decrypted:", result)
 
 def getInput():
     global inUse
     choice = input("Enter your selection == > ")
+    print()
+    
+    if choice != "1" and choice != "2" and choice != "3" and choice.upper() != "Q":
+        while choice != "1" and choice != "2" and choice != "3"and choice.upper() != "Q":
+            choice = input("Enter your selection == > ")
+        print()
     
     if choice == "1":
-        encrypt()
+        text = input("Enter (brief) text to encrypt: ")
+        key = int(input("Enter the number to shift letters by: "))
+        encrypt(text, key)
+        print()
     elif choice == "2":
-        decrypt()
+        text = input("Enter (brief) text to decrypt: ")
+        key = int(input("Enter the number to shift letters by: "))
+        decrypt(text, key)
+        print()
     elif choice.upper() == "Q":
         inUse = False
-        return inUse
 
 def printMenu():
     print("MAIN MENU:")
