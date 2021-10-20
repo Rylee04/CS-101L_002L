@@ -55,7 +55,12 @@ def verifyCheckDig(libCard):
         for i in range(5):
             if libCard[i] < "A" or libCard > "Z":
                 errorToRead = "The first 5 characters must be A-Z, the invalid character is at " + str(i) + " is " + libCard[i]
+<<<<<<< HEAD
                 return(False, errorToRead) 
+=======
+                return(False, errorToRead)
+            
+>>>>>>> e32d6f4ce58e6555f117441bf6875a0123918eb7
         for i in range(7,10):
             if libCard[i] < "0" or libCard[i] > "9":
                 errorToRead = "The last three characters must be 0-9, the invalid character is at " + str(i) + " is " + libCard[i]
@@ -94,4 +99,9 @@ while inUse == True:
         print("Library card is invalid")
         print(errorToRead)
 
+<<<<<<< HEAD
     print()
+=======
+    print()
+
+>>>>>>> e32d6f4ce58e6555f117441bf6875a0123918eb7
