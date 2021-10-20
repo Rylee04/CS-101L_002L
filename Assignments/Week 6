@@ -1,0 +1,51 @@
+
+#CS 101 Lab
+#Program 6
+#Ryan Lee
+#rlhmb@umsystem.edu
+
+'''The main program loop should ask the user if they want to:
+1. Encode a string
+2. Decode a string
+Q. Quit
+If the user chooses anything other than 1, 2, or Q, they get an error and it tries again
+If they want to encrypt or decrypt a word or sentence, ask for a phrase and then ask for the #
+to shift by. Once you encrypt/decrypt the string, output the result to the user.
+Go back to the main menu until they select quit.'''
+
+import string
+inUse = True
+
+def encrypt(text, shiftBy):
+    #fixme
+    return
+
+def decrypt(text, shiftBy):
+    #fixme
+    return
+
+def getInput():
+    global inUse
+    choice = input("Enter your selection == > ")
+    
+    if choice == "1":
+        encrypt()
+    elif choice == "2":
+        decrypt()
+    elif choice.upper() == "Q":
+        inUse = False
+        return inUse
+
+def printMenu():
+    print("MAIN MENU:")
+    print("1) Encode a string")
+    print("2) Decode a string")
+    print("Q) Quit")
+
+def main():
+    while inUse == True:
+        printMenu()
+        getInput()
+
+if __name__ == "__main__":
+    main()
