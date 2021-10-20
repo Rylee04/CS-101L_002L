@@ -1,0 +1,97 @@
+
+#CS 101 Lab
+#Program 5
+#Ryan Lee
+#rlhmb@umsystem.edu
+
+numValue = 0
+inUse = True
+
+def getSchool(libCard):
+    if libCard[5] == "1":
+       return("School of Computing and Engineering SCE")
+    elif libCard[5] == "2":
+        return("School of Law")
+    elif libCard[5] == "3":
+        return("College of Arts and Sciences")
+    else:
+        return("Invalid School")
+
+def getGrade(libCard):
+    if libCard[6] == "1":
+        return("Freshman")
+    elif libCard[6] == "2":
+        return("Sophomore")
+    elif libCard[6] == "3":
+        return("Junior")
+    elif libCard[6] == "4":
+        return("Senior")
+    else:
+        return("Invalid Grade")
+
+def characterValue(c):
+    numValue = ord(c)
+
+    if (numValue >= 48 and numValue <= 57):
+        return numValue - 48
+    elif (numValue >= 65 and numValue <= 90):
+        return numValue - 65
+
+def getCheckDig(libCard):
+    sum = 0
+
+    for i in range(len(libCard)):
+        numValue = characterValue(libCard[i])
+        sum += numValue * (i+1)
+
+    return sum % 10
+
+def verifyCheckDig(libCard):
+    if len(libCard) != 10:
+        errorToRead = "The length of the number given must be 10"
+        return (False, errorToRead)
+
+    else:
+        for i in range(5):
+            if libCard[i] < "A" or libCard > "Z":
+                errorToRead = "The first 5 characters must be A-Z, the invalid character is at " + str(i) + " is " + libCard[i]
+                return(False, errorToRead) 
+        for i in range(7,10):
+            if libCard[i] < "0" or libCard[i] > "9":
+                errorToRead = "The last three characters must be 0-9, the invalid character is at " + str(i) + " is " + libCard[i]
+                return(False, errorToRead)
+            elif libCard[5] != "1" and libCard[5] != "2" and libCard[5] != "3":
+                errorToRead = "The sixth character must be 1, 2, or 3"
+                return(False, errorToRead)
+            elif libCard[6] != "1" and libCard[6] != "2" and libCard[6] != "3" and libCard[6] != "4":
+                errorToRead = "The seventh chacter must be 1, 2, 3, or 4"
+                return(False, errorToRead)
+
+        thisValue = int(libCard[9])
+        correctValue = getCheckDig(libCard)
+
+        if thisValue != correctValue:
+            errorToRead = "Check Digit " + str(thisValue) + " does not match calculated value " + str(correctValue) + "."
+            return(False, errorToRead)
+
+        return(True, "Library card is valid.")
+
+
+
+while inUse == True:
+    libCard = input("Enter Library Card. Hit Enter to Exit ==> ")
+    isValid, errorToRead = verifyCheckDig(libCard)
+
+    if isValid == True:
+        print(errorToRead)
+        print("The card belongs to a student in", getSchool(libCard))
+        print("The card belongs to a", getGrade(libCard))
+    else:
+        if libCard == "":
+            inUse = False
+            break
+
+        print("Library card is invalid")
+        print(errorToRead)
+
+    print()
