@@ -9,7 +9,7 @@ and output the results to a file aboce a threshold that the user gives.
 If the user wants to see all vehicles with a combined mpg greater than 50,
 then your program will output that information to the file of their choosing.
 The information is tab-delimited. When you read from a file, the values are separated
-by the tab character "\t". Your program will need to ask the user for a minimum fuel economy,
+by the tab character \n. Your program will need to ask the user for a minimum fuel economy,
 and be able to handle non-float data being entered. It should continually ask for a correct value.
 It should also make sure they don't enter a value less than or equal to zero or greater than 100.
 The program will ask for an input file and should loop until the user gives a valid file that can
@@ -23,40 +23,52 @@ and give the year, make and model that had the error.'''
 
 import os
 
-try:
-    minMPG = float(input("Enter the minimum mpg ==> "))
-except ValueError:
-        print("wrong")
-        minMPG = float(input("Enter the minimum mpg ==> "))
+def minimumMPG(): 
+    while True:
+        try:
+            minMpg = float(input("Enter the minimum mpg ==> "))
+            if minMpg < 0:
+                print("Fuel economy given must be greater than 0")
+            elif minMpg > 100:
+                print("Fuel economy must be less than 100")
+            else:
+                return(minMpg) 
+        except:
+            print("You must enter a number for the fuel economy")
 
-if minMPG <= 0 or minMPG > 100:
-    while minMPG <= 0 or minMPG > 100:
-        if minMPG <= 0:
-            print("Fuel economy must be greater than 0")
-        else:
-            print("Fuel economy must be less than 100")
-            
-        minMPG = float(input("Enter the minimum mpg ==> "))
+def getInputFile():
+    while True:
+        file = input("Enter the name of the input vehicle file ==> ")
+        try:
+            here = os.path.dirname(os.path.abspath(__file__))
+            file = os.path.join(here, file)
+            with open(file) as read_file:
+                return[[data.strip() for data in line.strip().split("\t")] for line in read_file.readlines()]
+        except:
+            print("Could not open file", file)
 
-try:        
-    inputFile = input("Enter the name of the input vehicle file ==> ")
-    here = os.path.dirname(os.path.abspath(__file__))
-    inputFile = os.path.join(here, inputFile)
-    f = open(inputFile)
-except FileNotFoundError:
-    print("Could not open file", inputFile)
-    inputFile = input("Enter the name of the input vehicle file ==> ")
-finally:
-    here = os.path.dirname(os.path.abspath(__file__))
-    inputFile = os.path.join(here, inputFile)
-    f = open(inputFile)
 
-try:        
-    outputFile = input("Enter the name of the file to output to ==> ")
-    o = open(outputFile, "w")
-except IOError:
-    print("There is an IO Error", outputFile)
-    outputFile = input("Enter the name of the file to output to ==> ")
-finally:
-    o = open(outputFile, "w")
+def writeToFile(minMileage, fileData):
+    while True:
+        try:
+            file = input("Enter the name of the file to output to ==> ")
+            with open(file, "w") as writeFile:
+                for data in fileData:
+                    try:
+                        if minMileage >= float(data[7]):
+                            writeFile.write("{0:<40}{1:<40}{2:<40}{3:>10}\n".format(data[0],data[1],data[2],data[7]))
+                    except:
+                        print("Could not convert value", "{}".format(data[7]), "for vehicle", "{} {} {}".format(data[0],data[1],data[2]))
+            break
+        except IOError:
+            print("There is an IO Error", file)
 
+def main():
+    minMileage = minimumMPG()
+    print()
+    fileData = getInputFile()[1:]
+    print()
+    writeToFile(minMileage,fileData)
+
+if __name__ == "__main__":
+    main()
