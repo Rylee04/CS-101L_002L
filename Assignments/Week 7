@@ -1,0 +1,57 @@
+
+#CS 101 Lab
+#Program 6
+#Ryan Lee
+#rlhmb@umsystem.edu
+
+'''Write a program to read through a file containing information about fuel economy
+and output the results to a file aboce a threshold that the user gives.
+If the user wants to see all vehicles with a combined mpg greater than 50,
+then your program will output that information to the file of their choosing.
+The information is tab-delimited. When you read from a file, the values are separated
+by the tab character "\t". Your program will need to ask the user for a minimum fuel economy,
+and be able to handle non-float data being entered. It should continually ask for a correct value.
+It should also make sure they don't enter a value less than or equal to zero or greater than 100.
+The program will ask for an input file and should loop until the user gives a valid file that can
+be opened. It should also ask for an output file. While a FileNotFoundError 
+won’t be thrown trying to open a file in write mode, it can generate an IOError.
+When writing out to the output file, you should output the Year, Make and Model 
+left justified by 40 spaces and the mpg right justified by 10 spaces. 
+Your program should also be able to handle an incorrect combinedmpg column as in vehicles2.txt. 
+When a bad value that can’t be converted is encountered, you should warn the user 
+and give the year, make and model that had the error.'''
+
+try:
+    minMPG = float(input("Enter the minimum mpg ==> "))
+except ValueError:
+        print("wrong")
+        minMPG = float(input("Enter the minimum mpg ==> "))
+
+if minMPG <= 0 or minMPG > 100:
+    while minMPG <= 0 or minMPG > 100:
+        if minMPG <= 0:
+            print("Fuel economy must be greater than 0")
+        else:
+            print("Fuel economy must be less than 100")
+            
+        minMPG = float(input("Enter the minimum mpg ==> "))
+
+try:        
+    inputFile = input("Enter the name of the input vehicle file ==> ")
+    f = open(inputFile)
+except FileNotFoundError:
+    print("Could not open file", inputFile)
+    inputFile = input("Enter the name of the input vehicle file ==> ")
+finally:
+    f = open(inputFile)
+
+try:        
+    outputFile = input("Enter the name of the file to output to ==> ")
+    o = open(outputFile)
+except IOError:
+    print("There is an IO Error", outputFile)
+    outputFile = input("Enter the name of the file to output to ==> ")
+finally:
+    o = open(outputFile)
+
+
