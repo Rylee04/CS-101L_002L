@@ -21,6 +21,8 @@ Your program should also be able to handle an incorrect combinedmpg column as in
 When a bad value that can’t be converted is encountered, you should warn the user 
 and give the year, make and model that had the error.'''
 
+import os
+
 try:
     minMPG = float(input("Enter the minimum mpg ==> "))
 except ValueError:
@@ -38,20 +40,23 @@ if minMPG <= 0 or minMPG > 100:
 
 try:        
     inputFile = input("Enter the name of the input vehicle file ==> ")
+    here = os.path.dirname(os.path.abspath(__file__))
+    inputFile = os.path.join(here, inputFile)
     f = open(inputFile)
 except FileNotFoundError:
     print("Could not open file", inputFile)
     inputFile = input("Enter the name of the input vehicle file ==> ")
 finally:
+    here = os.path.dirname(os.path.abspath(__file__))
+    inputFile = os.path.join(here, inputFile)
     f = open(inputFile)
 
 try:        
     outputFile = input("Enter the name of the file to output to ==> ")
-    o = open(outputFile)
+    o = open(outputFile, "w")
 except IOError:
     print("There is an IO Error", outputFile)
     outputFile = input("Enter the name of the file to output to ==> ")
 finally:
-    o = open(outputFile)
-
+    o = open(outputFile, "w")
 
