@@ -1,0 +1,53 @@
+
+#CS 101 Lab
+#Program 8
+#Ryan Lee
+#rlhmb@umsystem.edu
+
+'''Our program will allow the user to enter 2 types of grades: tests and programs.
+Each of our scores is assumed to be out of 100, so we only need the user's score.
+The tests are 60% of a studen'ts grade, while programs are 40%.
+In order to calculate the final score, we multiply the mean score of the tests
+by 0.6, and add it to the mean of programs multiplied by 0.4.
+When we display scores, we will also show them the low, high, mean, and standard
+deviation of their tests and programs
+mean is the average. To calulate the mean, add all values and divide
+by the number of values.
+Standard deviation is calculated by taking each value and subtracting the mean,
+then squaring the value. Afterwards, divide the sum of those values then take
+the square root of that result.
+Additionally: scores must be a float >= 0. Warn the user if they try to remove
+a score that does not exist. If there are no scores, display "N/A"'''
+
+import math
+
+using = True
+
+def menu():
+    print("{:^30}".format("Grade Menu"))
+    print("1 -Add Test")
+    print("2 -Remove Test")
+    print("3 -Clear Tests")
+    print("4 -Add Assignment")
+    print("5 -Remove Assignment")
+    print("6 -Clear Assignments")
+    print("D -Display Scores")
+    print("Q -Quit")
+
+    choice = input("==> ")
+    return choice
+
+def options(choice):
+    if choice == 1:
+        return
+
+
+def main():
+    global using
+
+    while using == True:
+        menu()
+        options(menu())
+
+if __name__ == "__main__":
+    main()
