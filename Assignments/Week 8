@@ -20,34 +20,199 @@ Additionally: scores must be a float >= 0. Warn the user if they try to remove
 a score that does not exist. If there are no scores, display "N/A"'''
 
 import math
-
-using = True
+choice = ""
 
 def menu():
     print("{:^30}".format("Grade Menu"))
-    print("1 -Add Test")
-    print("2 -Remove Test")
-    print("3 -Clear Tests")
-    print("4 -Add Assignment")
-    print("5 -Remove Assignment")
-    print("6 -Clear Assignments")
-    print("D -Display Scores")
-    print("Q -Quit")
+    print("1 - Add Test")
+    print("2 - Remove Test")
+    print("3 - Clear Tests")
+    print("4 - Add Assignment")
+    print("5 - Remove Assignment")
+    print("6 - Clear Assignments")
+    print("D - Display Scores")
+    print("Q - Quit")
 
-    choice = input("==> ")
+    choice = input("\n==> ")
     return choice
 
-def options(choice):
-    if choice == 1:
-        return
+def addScore():
+    global choice
+    x = True
 
+    while x == True:
+        try:
+            if choice == "1":
+                newTest = float(input("\nEnter the new Test score 0 - 100 ==> ")) 
+            elif choice == "4":
+                newTest = float(input("\nEnter the new Assignment score 0 - 100 ==> ")) 
+
+            while newTest < 0:
+                print("Value must be in the range 0 - 100.\n")
+                newTest = float(input("Enter a score 0 - 100 ==> "))
+
+            x = False
+        except ValueError:
+            print("Wrong type of input, try again.\n")
+
+    return newTest
+
+def delScore(tstList):
+    global choice
+    tList = tstList
+    x = True
+
+    while x == True:
+        try:
+            if choice == "2":
+                test = float(input("\nEnter the Test to remove 0 - 100 ==> "))
+            elif choice == "5":
+                test = float(input("\nEnter the Assignment to remove 0 - 100 ==> "))
+
+            if test not in tList:
+                print("Could not find that score to remove.")
+
+                return tList
+
+            if test < 0:
+                print("Value must be in the range 0 - 100.")
+
+                if choice == "2":
+                    test = float(input("\nEnter the Test to remove 0 - 100 ==> "))
+                elif choice == "5":
+                    test = float(input("\nEnter the Assignment to remove 0 - 100 ==> "))
+
+            if test not in tList:
+                print("Could not find that score to remove.")
+                
+            x = False
+        except ValueError:
+            print("Wrong type of input, try again.")
+
+    tList.remove(test)
+
+    return tList
+
+def display(tsList, psList):
+    tList = tsList
+    pList = psList
+    testCount = len(tList)
+    programCount = len(pList)
+    maxTest = 0
+    maxProgram = 0
+    minTest = 1000
+    minProgram = 1000
+    avgTest = 0
+    avgProgram = 0
+    tstd = 0
+    astd = 0
+    testGrade = 0
+    programGrade = 0
+    grade = 0
+
+    for i in tList:
+        if i > float(maxTest):
+            maxTest = "{:.2f}".format(i)
+
+        if i < float(minTest):
+            minTest = "{:.2f}".format(i)
+
+        avgTest += i
+    
+    for i in pList: 
+        if i > float(maxProgram):
+            maxProgram = "{:.2f}".format(i)
+
+        if i < float(minProgram):
+            minProgram = "{:.2f}".format(i)
+
+        avgProgram += i
+    
+    for ele in range(len(tList)):
+        testGrade += tList[ele]
+    
+    for ele in range(len(pList)):
+        programGrade += pList[ele]
+
+    try:
+        grade = "{:.2f}".format(((testGrade / testCount * 0.6) + (programGrade / programCount * 0.4)))
+    except ZeroDivisionError:
+        grade = 0.0
+
+    try:
+        avgTest = "{:.2f}".format(avgTest / testCount)
+    except ZeroDivisionError:
+        avgTest = "N/A"
+        minTest = "N/A"
+        maxTest = "N/A"
+
+    try:
+        avgProgram = "{:.2f}".format(avgProgram / programCount)
+    except ZeroDivisionError:
+        avgProgram = "N/A"
+        astd = "N/A"
+        minProgram = "N/A"
+        maxProgram = "N/A"
+    
+    if tstd != "N/A":
+        for i in tList:
+            tstd += (i - float(avgTest)) ** 2
+        try:
+            tstd = "{:.2f}".format(math.sqrt(tstd / testCount))
+        except ZeroDivisionError:
+            tstd = "N/A"
+
+    if astd != "N/A":
+        for i in pList:
+            astd += (i - float(avgProgram)) ** 2
+        try:
+            astd = "{:.2f}".format(math.sqrt(astd / programCount))
+        except ZeroDivisionError:
+            astd = "N/A"
+
+    print("{:<20}{:<10}{:<10}{:<10}{:<10}{:<10}".format("Type", "#", "Min", "Max", "Avg", "Std"))
+    print("{:=<70}".format(""))
+    print("{:<20}{:<10}{:<10}{:<10}{:<10}{:<10}".format("Tests", testCount, minTest, maxTest, avgTest, tstd))
+    print("{:<20}{:<10}{:<10}{:<10}{:<10}{:<10}".format("Programs", programCount, minProgram, maxProgram, avgProgram, astd))
+    print("\nThe weighted score is {:.2f}".format(float(grade)))
 
 def main():
-    global using
+    global choice
+    using = True
+    tests = []
+    programs = []
 
     while using == True:
-        menu()
-        options(menu())
+        choice = menu()
+
+        if choice == "1":
+            tests.append(addScore())
+
+        if choice == "2":
+            tests = delScore(tests)
+            
+        if choice == "3":
+            print("\nTests Cleared.\n")
+            tests.clear()
+
+        if choice == "4":
+            programs.append(addScore())
+
+        if choice == "5":
+            programs = delScore(programs)
+
+        if choice == "6":
+            print("\nAssignments Cleared.\n")
+            programs.clear()
+
+        if choice.upper() == "D":
+            display(tests, programs)
+
+        if choice.upper() == "Q":
+            using = False
+        
+        print()
 
 if __name__ == "__main__":
     main()
+
