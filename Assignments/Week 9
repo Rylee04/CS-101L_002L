@@ -16,77 +16,146 @@ from the functions given.'''
 import csv
 
 def month_from_number(x):
+    months = ["[placeholder]", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
     if x < 1 or x > 12:
         raise ValueError("Month must be 1-12")
-    elif x == 1:
-        return "January"
-    elif x == 2:
-        return "February"
-    elif x == 3:
-        return "March"
-    elif x == 4:
-        return "April"
-    elif x == 5:
-        return "May"
-    elif x == 6:
-        return "June"
-    elif x == 7:
-        return "July"
-    elif x == 8:
-        return "August"
-    elif x == 9:
-        return "September"
-    elif x == 10:
-        return "October"
-    elif x == 11:
-        return "November"
-    elif x == 12:
-        return "December"
+    else:
+        for i in range(12):
+            if x == i + 1:
+                return months[i + 1]
 
 def read_in_file(fileName):
     lst = []
-    
-    f = open(fileName, encoding = "utf-8")
-    fcsv = csv.reader(f)
 
-    for line in fcsv:
-        lst.append(line)
-    
-    f.close()
+    with open(fileName, encoding = "utf-8") as f:
+        fcsv = csv.reader(f)
+
+        for line in fcsv:
+            lst.append(line)
 
     return(lst)
 
 def create_reported_date_dict(inputList):
+    dateList = []
     dateDict = {}
 
-    '''reported date is at index 1
-    offense is  at index 7
-    zip code is at index 13'''
+    for line in inputList:
+        dateList.append(line[1])
 
-    
+    dateList.remove(dateList[0])
+
+    for key in dateList:
+        dateDict[key] = dateDict.get(key, 0) + 1
     
     return dateDict
 
-def create_reported_month_dict():
-    return
+def create_reported_month_dict(inputList):
+    inputDict = create_reported_date_dict(inputList)
+    x = inputDict.keys()
+    monthDict = {}
 
-def create_offense_dict():
-    return
+    for keys in x:
+        keys = str(keys)
+        y = int(keys[0] + keys[1])
+        
+        try:
+            monthDict[y] += 1
+        except KeyError:
+            monthDict[y] = 1
 
-def create_offense_by_zip():
-    return  
+    return monthDict
+
+def create_offense_dict(inputList):
+    offenseList = []
+    offenseDict = {}
+
+    for line in inputList:
+        offenseList.append(line[7])
+
+    offenseList.remove(offenseList[0])
+
+    for key in offenseList:
+        offenseDict[key] = offenseDict.get(key, 0) + 1
+    
+    return offenseDict
+
+def create_offense_by_zip(inputList):
+    zipDict = {}
+
+    for i, entry in enumerate(inputList):
+        if i == 0:
+            continue
+
+        offense = entry[7]
+        zip = entry[13]
+
+        if not offense in zipDict:
+            zipDict[offense] = {}
+            zipDict[offense][zip] = 1
+        else:
+            if not zip in zipDict[offense]:
+                zipDict[offense][zip] = 1
+            else:
+                zipDict[offense][zip] += 1
+
+    return zipDict
+
+def main():
+    using = True
+
+    while using == True:
+        try:
+            fileName = input('Enter the name of the crime data file ==> ')
+            inputFile = read_in_file(fileName)
+            using = False
+        except FileNotFoundError:
+            print("Could not find the file specified.", fileName, "not found")
+
+    monthDict = create_reported_month_dict(inputFile)
+    offenseDict = create_offense_dict(inputFile)
+    numCrimes = 0
+    monthCrimes = 0
+    numOffense = 0
+    offense = ''
+
+    for key, value in monthDict.items():
+        if value > numCrimes:
+            numCrimes = value
+            monthCrimes = key
+
+    for key, value in offenseDict.items():
+        if value > numOffense:
+            numOffense = value
+            offense = key
+
+    print()
+
+    strMonth = month_from_number(monthCrimes)
+
+    print('The month with the highest # of crime is', strMonth, 'with', numCrimes, 'offenses')
+    print('The offense with the highest # of crimes is', offense, 'with', numOffense, 'offenses')
+    
+    print()
+
+    offenseName = input('Enter an offense: ')
+    offenseName = offenseName.capitalize()
+
+    while not offenseName in offenseDict:
+        print('Not a valid offense found, please try again')
+        offenseName = input('Enter an offense: ')
+
+
+    offenseZip = create_offense_by_zip(inputFile)
+
+    print(offenseName, 'offenses by Zip Code')
+    print('{:<20}{:>10}'.format('Zip code', '# Offenses'))
+    print("=" * 30)
+    
+    userDict = offenseZip[offenseName]
+
+    for zip, value in userDict.items():
+        print('{:<20}{:>10}'.format(zip, value))
 
 if __name__ == "__main__":
-    while 1:
-        file = input("Enter the name of the crime data file: ")
-
-        try:
-            with open(file, encoding = "utf-8") as f:
-                #fixme
-                print("The month with the highest number of crimes is", month, "with", total, "offenses")
-                print("The offense with the highest number of crimes is ", often, "with", amount, "offenses")
-        except FileNotFoundError:
-            print("Cound not find the file specified.", file, "not found")
-
-        try:
-            offense = input("Enter an offense: ")
+    main()
