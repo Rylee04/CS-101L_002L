@@ -22,52 +22,52 @@ second. Use the time module to sleep.'''
 import time
 
 class Clock:
-    def __init__(self, hour = 0, minute = 0, second = 0, type = 0):
-        self.hour = hour
-        self.minute = minute
-        self.second = second
+    def __init__(self, hours = 0, minutes = 0, seconds = 0, type = 0):
+        self.hours = hours
+        self.minutes = minutes
+        self.seconds = seconds
         self.type = type
 
     def tick(self):
-        self.second += 1
-        self.second = self.second
+        self.seconds += 1
+        self.seconds = self.seconds
 
-        if self.second >= 60:
-            self.minute += 1
-            self.second = 0
+        if self.seconds >= 60:
+            self.minutes += 1
+            self.seconds = 0
 
-        if self.minute >= 60:
-            self.hour += 1
-            self.minute = 0
+        if self.minutes >= 60:
+            self.hours += 1
+            self.minutes = 0
 
-        if self.hour == 24:
-            self.hour = 0
+        if self.hours == 24:
+            self.hours = 0
 
         if self.type == 0:
-            return '{:02}:{:02}:{:02}'.format(self.hour, self.minute, self.second)
+            return '{:02}:{:02}:{:02}'.format(self.hours, self.minutes, self.seconds)
 
         if self.type == 1:
-            if self.hour >= 12 and self.hour < 24:
-                return '{:02}:{:02}:{:02} PM'.format(self.hour, self.minute, self.second)
-            elif self.hour >= 0 and self.hour <= 11:
-                return '{:02}:{:02}:{:02} AM'.format(self.hour, self.minute, self.second)
+            if self.hours >= 12 and self.hours < 24:
+                return '{:02}:{:02}:{:02} PM'.format(self.hours, self.minutes, self.seconds)
+            elif self.hours >= 0 and self.hours <= 11:
+                return '{:02}:{:02}:{:02} AM'.format(self.hours, self.minutes, self.seconds)
     
     def __str__(self):
         if self.type == 0:
-            return '{:02}:{:02}:{:02} PM'.format(self.hour, self.minute, self.second)
-        elif self.hour >= 0 and self.hour <= 11:
-            return '{:02}:{:02}:{:02} AM'.format(self.hour, self.minute, self.second)
+            return '{:02}:{:02}:{:02} PM'.format(self.hours, self.minutes, self.seconds)
+        elif self.hours >= 0 and self.hours <= 11:
+            return '{:02}:{:02}:{:02} AM'.format(self.hours, self.minutes, self.seconds)
 
 if __name__ == "__main__":
     type = int(input("24 hour clock or 12 hour clock (0 or 1) ==> "))
-    hour = int(input("What is the current hour ==> "))
-    minute = int(input("What is the current minute ==> "))
-    second = int(input("What is the current second ==> "))
+    hours = int(input("What is the current hour ==> "))
+    minutes = int(input("What is the current minute ==> "))
+    seconds = int(input("What is the current second ==> "))
 
-    clock = Clock(hour, minute, second, type)
+    clock = Clock(hours, minutes, seconds, type)
 
     while True:
         print(clock.tick())
-        second += 1
+        seconds += 1
         time.sleep(1)
 
