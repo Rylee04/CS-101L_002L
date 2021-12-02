@@ -1,0 +1,11 @@
+
+#CS 101 Lab
+#Program 12
+#Ryan Lee
+#rlhmb@umsystem.edu
+
+import turtle
+
+turtle.forward(100)
+turtle.right(90)
+turtle.forward(50)
